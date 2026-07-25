@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gladbacher Straße 15 — WEG-Beirat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF6EF;
+    --paper-deep: #F2ECDF;
+    --ink: #21281F;
+    --ink-soft: #4B5346;
+    --brass: #A9793E;
+    --brass-deep: #8B6231;
+    --moss: #5C6E52;
+    --brick: #A6402F;
+    --line: #DED5C2;
+    --white: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Fraunces', serif;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  a { color: inherit; }
+
+  .mono {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(250, 246, 239, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .brand-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .brand-sub {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  nav {
+    display: flex;
+    gap: 22px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  nav a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  nav a:hover, nav a:focus-visible { color: var(--brass-deep); border-color: var(--brass-deep); }
+
+  @media (max-width: 560px) {
+    nav { gap: 14px; }
+    nav a { font-size: 13px; }
+  }
+
+  /* ---------- hero: engraved plate ---------- */
+  .hero {
+    padding: 64px 24px 48px;
+  }
+  .plate {
+    max-width: 872px;
+    margin: 0 auto;
+    background: linear-gradient(155deg, #EFE6D2 0%, #E4D8BE 55%, #D9CBA8 100%);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 56px 40px;
+    position: relative;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 18px 40px -24px rgba(33,40,31,0.35);
+  }
+  .plate::before, .plate::after,
+  .plate .screw-tr, .plate .screw-bl {
+    content: "";
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #FFF6E2, #B8925A 55%, #7A5A32 100%);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  }
+  .plate::before { top: 16px; left: 16px; }
+  .plate::after { bottom: 16px; right: 16px; }
+  .plate .screw-tr { top: 16px; right: 16px; }
+  .plate .screw-bl { bottom: 16px; left: 16px; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass-deep);
+    margin-bottom: 14px;
+  }
+  .plate h1 {
+    font-size: clamp(34px, 6vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+  .plate .place {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+  }
+  .plate .tagline {
+    margin-top: 26px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink);
+    border-top: 1px solid rgba(33,40,31,0.18);
+    padding-top: 20px;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 56px 24px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-head .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--brass-deep);
+    letter-spacing: 0.08em;
+  }
+  .section-head h2 {
+    font-size: 26px;
+    font-weight: 600;
+  }
+  .section-intro {
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: -14px 0 28px;
+    font-size: 15px;
+  }
+
+  /* ---------- Ansprechpartner: nameplate grid ---------- */
+  .plate-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 620px) { .plate-grid { grid-template-columns: 1fr; } }
+
+  .nameplate {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 22px;
+    position: relative;
+    box-shadow: 0 10px 22px -18px rgba(33,40,31,0.5);
+  }
+  .nameplate::before, .nameplate::after {
+    content: "";
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff, var(--brass) 60%, var(--brass-deep) 100%);
+  }
+  .nameplate::before { top: 10px; left: 10px; }
+  .nameplate::after { top: 10px; right: 10px; }
+  .nameplate .role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 6px;
+  }
+  .nameplate .name {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .nameplate .detail {
+    font-size: 14px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .nameplate .detail .dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--brass); flex: none;
+  }
+
+  .placeholder-note {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* ---------- Notfall ---------- */
+  .emergency {
+    background: #EFE1DC;
+    border: 1px solid #DCC0B7;
+  }
+  .emergency .section-head .tag { color: var(--brick); }
+  .call-list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #D9BEB5;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .call-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #EFE1DC;
+  }
+  .call-row:last-child { border-bottom: none; }
+  .call-row .what { font-weight: 500; }
+  .call-row .who { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+  .call-row .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--brick);
+    white-space: nowrap;
+  }
+  .call-row.sos { background: #F7ECE9; }
+  .call-row.sos .num { font-size: 20px; }
+
+  /* ---------- Hausordnung ---------- */
+  .rules {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .rule {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .rule:last-child { border-bottom: none; }
+  .rule .no {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--brass-deep);
+    padding-top: 3px;
+  }
+  .rule h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .rule p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 24px 48px;
+    margin-top: 24px;
+  }
+  .footer-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .demo-banner {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    font-size: 13px;
+    padding: 8px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="demo-banner">Beispielseite mit Platzhalterdaten — vor Veröffentlichung Namen, Nummern &amp; Hausordnung durch echte Angaben ersetzen</div>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">Gladbacher 15</span>
+        <span class="brand-sub">WEG&nbsp;·&nbsp;Beirat</span>
+      </div>
+      <nav>
+        <a href="#kontakt">Kontakt</a>
+        <a href="#notfall">Notfall</a>
+        <a href="#hausordnung">Hausordnung</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="plate">
+      <span class="screw-tr"></span><span class="screw-bl"></span>
+      <div class="eyebrow">Wohnungseigentümergemeinschaft</div>
+      <h1>Gladbacher Straße 15</h1>
+      <div class="place">40219 Düsseldorf</div>
+      <div class="tagline">Ihr Zuhause. Unsere Gemeinschaft.</div>
+    </div>
+  </div>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">01</span>
+        <h2>Ansprechpartner im Beirat</h2>
+      </div>
+      <p class="section-intro">Bei Fragen rund um die Hausverwaltung, laufende Themen oder Anliegen der Eigentümergemeinschaft erreichen Sie den Beirat unter der gemeinsamen Adresse oder direkt bei einem der Mitglieder.</p>
+
+      <div class="plate-grid">
+        <div class="nameplate">
+          <div class="role">Vorsitz</div>
+          <div class="name">Max Beispiel</div>
+          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
+          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0000</span></div>
+        </div>
+        <div class="nameplate">
+          <div class="role">Stellvertretung</div>
+          <div class="name">Anna Muster</div>
+          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
+          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0001</span></div>
+        </div>
+        <div class="nameplate">
+          <div class="role">Kasse &amp; Finanzen</div>
+          <div class="name">Jonas Platzhalter</div>
+          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
+          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0002</span></div>
+        </div>
+        <div class="nameplate">
+          <div class="role">Bauliche Anliegen</div>
+          <div class="name">Lea Beispielhaft</div>
+          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
+          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0003</span></div>
+        </div>
+      </div>
+      <p class="placeholder-note">Hausverwaltung: Musterverwaltung GmbH · Ansprechpartner: Frau Beispiel · verwaltung@musterverwaltung.de · 0211 000 9999</p>
+    </div>
+  </section>
+
+  <section id="notfall" class="emergency">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">02</span>
+        <h2>Im Notfall</h2>
+      </div>
+      <p class="section-intro">Diese Nummern gelten rund um die Uhr. Bei Gefahr für Leib und Leben immer zuerst 112 oder 110 wählen.</p>
+
+      <div class="call-list">
+        <div class="call-row sos">
+          <div>
+            <div class="what">Feuer, Unfall, Lebensgefahr</div>
+            <div class="who">Feuerwehr &amp; Rettungsdienst</div>
+          </div>
+          <div class="num">112</div>
+        </div>
+        <div class="call-row sos">
+          <div>
+            <div class="what">Einbruch, Gewalt, Gefahr</div>
+            <div class="who">Polizei</div>
+          </div>
+          <div class="num">110</div>
+        </div>
+        <div class="call-row">
+          <div>
+            <div class="what">Wasserrohrbruch, Rohrverstopfung</div>
+            <div class="who">Notdienst Sanitär — Muster Haustechnik</div>
+          </div>
+          <div class="num mono">0211 000 1111</div>
+        </div>
+        <div class="call-row">
+          <div>
+            <div class="what">Stromausfall im Gebäude</div>
+            <div class="who">Elektro-Notdienst Beispiel</div>
+          </div>
+          <div class="num mono">0211 000 2222</div>
+        </div>
+        <div class="call-row">
+          <div>
+            <div class="what">Aufzug bleibt stehen</div>
+            <div class="who">Aufzugsnotruf (siehe Kabine)</div>
+          </div>
+          <div class="num mono">0800 000 3333</div>
+        </div>
+        <div class="call-row">
+          <div>
+            <div class="what">Hausmeisterliche Anliegen</div>
+            <div class="who">Herr Platzhalter</div>
+          </div>
+          <div class="num mono">0211 000 4444</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hausordnung">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">03</span>
+        <h2>Hausordnung — Kurzfassung</h2>
+      </div>
+      <p class="section-intro">Die vollständige Hausordnung liegt im Anhang zur Teilungserklärung bei der Verwaltung. Hier die wichtigsten Punkte für den Alltag.</p>
+
+      <div class="rules">
+        <div class="rule">
+          <div class="no">01</div>
+          <div>
+            <h3>Ruhezeiten</h3>
+            <p>Werktags 13:00–15:00 Uhr und täglich 22:00–7:00 Uhr. Bitte auf Trittschall in den Abendstunden achten.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="no">02</div>
+          <div>
+            <h3>Mülltrennung</h3>
+            <p>Tonnen im Hof, Standort siehe Beschriftung. Sperrmüll bitte nicht neben den Tonnen abstellen, sondern beim Ordnungsamt anmelden.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="no">03</div>
+          <div>
+            <h3>Gemeinschaftsflächen</h3>
+            <p>Treppenhaus, Flure und Fahrradkeller bitte freihalten — sie dienen auch als Fluchtweg.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="no">04</div>
+          <div>
+            <h3>Haustiere</h3>
+            <p>Grundsätzlich erlaubt, sofern andere Bewohner nicht dauerhaft gestört werden. Hunde im Treppenhaus bitte an der Leine führen.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="no">05</div>
+          <div>
+            <h3>Handwerker &amp; Umbauten</h3>
+            <p>Bauliche Veränderungen an Gemeinschaftseigentum bitte vorab beim Beirat oder der Verwaltung anmelden.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <span>WEG Gladbacher Straße 15 · Düsseldorf</span>
+      <span>Beispielseite — Stand Juli 2026</span>
+    </div>
+  </footer>
+
+</body>
+</html>
