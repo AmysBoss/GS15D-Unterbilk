@@ -1053,18 +1053,16 @@
 
   // --- Lorettoviertel news widget --------------------------------------
   // The list already shows fixed, real links by default (see HTML), so the
-  // section is never empty and needs no click to show something. If a live
-  // fetch of recent Google News results succeeds, those replace the static
-  // list. Uses the free allorigins CORS proxy + native XML parsing instead
-  // of a key-gated API, since GitHub Pages can't fetch Google News RSS
-  // directly (no CORS header). If the proxy is down or rate-limited, the
-  // static list simply stays as-is — no error state needed.
+  // section is never empty and needs no click to show something.
+  // A GitHub Action (see .github/workflows/update-news.yml) fetches Google
+  // News server-side once a day and writes the result to news.json in this
+  // same repo. The page just reads that same-origin file — no CORS proxy,
+  // no API key, nothing that can silently break in the browser. If the file
+  // doesn't exist yet (Action hasn't run) or fails to load, the static list
+  // above simply stays as-is.
   (function loadNews() {
     var listEl = document.getElementById("newsList");
     if (!listEl) return;
-
-    var rssUrl = "https://news.google.com/rss/search?q=Lorettoviertel+D%C3%BCsseldorf&hl=de&gl=DE&ceid=DE:de";
-    var proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(rssUrl);
 
     function currentLang() {
       return document.documentElement.getAttribute("lang") === "en" ? "en" : "de";
@@ -1084,31 +1082,27 @@
       return div.innerHTML;
     }
 
-    fetch(proxyUrl)
+    fetch("news.json", { cache: "no-store" })
       .then(function (res) {
-        if (!res.ok) throw new Error("proxy error");
-        return res.text();
+        if (!res.ok) throw new Error("no news.json yet");
+        return res.json();
       })
-      .then(function (xmlText) {
-        var xml = new window.DOMParser().parseFromString(xmlText, "text/xml");
-        var items = Array.prototype.slice.call(xml.querySelectorAll("item")).slice(0, 5);
+      .then(function (data) {
+        var items = (data && data.items) ? data.items.slice(0, 5) : [];
         if (!items.length) return; // keep static fallback list untouched
 
         var html = items.map(function (item) {
-          var title = (item.querySelector("title") || {}).textContent || "";
-          var link = (item.querySelector("link") || {}).textContent || "#";
-          var pubDate = (item.querySelector("pubDate") || {}).textContent || "";
           return (
-            '<li><a href="' + link + '" target="_blank" rel="noopener">' +
-            escapeHtml(title) +
-            '<span class="news-date">' + formatDate(pubDate) + "</span></a></li>"
+            '<li><a href="' + item.link + '" target="_blank" rel="noopener">' +
+            escapeHtml(item.title) +
+            '<span class="news-date">' + formatDate(item.pubDate) + "</span></a></li>"
           );
         }).join("");
         listEl.innerHTML = html;
       })
       .catch(function () {
-        // Live fetch unavailable — the static curated links already shown
-        // in the HTML remain visible, so there is nothing more to do here.
+        // news.json not available yet — the static curated links already
+        // shown in the HTML remain visible, so there is nothing more to do.
       });
   })();
 })();
