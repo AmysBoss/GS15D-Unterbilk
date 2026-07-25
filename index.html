@@ -865,7 +865,9 @@
           <div class="news-board-head" data-i18n="viertel.news.eyebrow">Aktuell · automatisch aktualisiert</div>
           <h3 data-i18n="viertel.news.title">Aus dem Lorettoviertel</h3>
           <ul class="news-list" id="newsList">
-            <li class="news-state" data-i18n="viertel.news.loading">Lade aktuelle Meldungen …</li>
+            <li><a href="https://lorettoviertel.org/" target="_blank" rel="noopener"><span data-i18n="viertel.news.item1">Termine &amp; Feste im Lorettoviertel</span><span class="news-date">lorettoviertel.org</span></a></li>
+            <li><a href="https://thedorf.de/tag/lorettoviertel/" target="_blank" rel="noopener"><span data-i18n="viertel.news.item2">Aktuelle Beiträge bei THE DORF</span><span class="news-date">thedorf.de</span></a></li>
+            <li><a href="https://news.google.com/search?q=Lorettoviertel%20D%C3%BCsseldorf&hl=de&gl=DE" target="_blank" rel="noopener"><span data-i18n="viertel.news.item3">Weitere Meldungen bei Google News</span><span class="news-date">news.google.com</span></a></li>
           </ul>
           <div class="news-foot" data-i18n="viertel.news.foot">Automatisch über Google News geladen · <a href="https://news.google.com/search?q=Lorettoviertel%20D%C3%BCsseldorf&hl=de&gl=DE" target="_blank" rel="noopener">alle Ergebnisse ansehen</a></div>
         </div>
@@ -943,9 +945,9 @@
       "viertel.chip3": "Bus &amp; Bahn ab Bilker Kirche",
       "viertel.news.eyebrow": "Aktuell · automatisch aktualisiert",
       "viertel.news.title": "Aus dem Lorettoviertel",
-      "viertel.news.loading": "Lade aktuelle Meldungen …",
-      "viertel.news.empty": "Aktuell keine Meldungen gefunden.",
-      "viertel.news.error": "Meldungen konnten nicht geladen werden.",
+      "viertel.news.item1": "Termine &amp; Feste im Lorettoviertel",
+      "viertel.news.item2": "Aktuelle Beiträge bei THE DORF",
+      "viertel.news.item3": "Weitere Meldungen bei Google News",
       "viertel.news.foot": "Automatisch über Google News geladen · <a href=\"https://news.google.com/search?q=Lorettoviertel%20D%C3%BCsseldorf&hl=de&gl=DE\" target=\"_blank\" rel=\"noopener\">alle Ergebnisse ansehen</a>",
       "footer.stand": "Beispielseite — Stand Juli 2026"
     },
@@ -1009,9 +1011,9 @@
       "viertel.chip3": "Bus &amp; train from Bilker Kirche",
       "viertel.news.eyebrow": "Latest · updates automatically",
       "viertel.news.title": "From the Lorettoviertel",
-      "viertel.news.loading": "Loading latest updates …",
-      "viertel.news.empty": "No current updates found.",
-      "viertel.news.error": "Updates couldn't be loaded.",
+      "viertel.news.item1": "Events &amp; festivals in Lorettoviertel",
+      "viertel.news.item2": "Latest posts on THE DORF",
+      "viertel.news.item3": "More updates on Google News",
       "viertel.news.foot": "Loaded automatically via Google News · <a href=\"https://news.google.com/search?q=Lorettoviertel%20D%C3%BCsseldorf&hl=en&gl=DE\" target=\"_blank\" rel=\"noopener\">see all results</a>",
       "footer.stand": "Example page — as of July 2026"
     }
@@ -1050,30 +1052,28 @@
   applyLang(saved);
 
   // --- Lorettoviertel news widget --------------------------------------
-  // Pulls recent Google News results for "Lorettoviertel Düsseldorf" via the
-  // free rss2json proxy (needed because browsers can't fetch Google News RSS
-  // directly due to CORS). No API key required for this volume of requests.
-  // If the fetch fails (offline, proxy down, rate limit), it falls back to a
-  // plain link so the section still degrades gracefully.
+  // The list already shows fixed, real links by default (see HTML), so the
+  // section is never empty and needs no click to show something. If a live
+  // fetch of recent Google News results succeeds, those replace the static
+  // list. Uses the free allorigins CORS proxy + native XML parsing instead
+  // of a key-gated API, since GitHub Pages can't fetch Google News RSS
+  // directly (no CORS header). If the proxy is down or rate-limited, the
+  // static list simply stays as-is — no error state needed.
   (function loadNews() {
     var listEl = document.getElementById("newsList");
     if (!listEl) return;
 
     var rssUrl = "https://news.google.com/rss/search?q=Lorettoviertel+D%C3%BCsseldorf&hl=de&gl=DE&ceid=DE:de";
-    var apiUrl = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl) + "&count=6";
+    var proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(rssUrl);
 
     function currentLang() {
       return document.documentElement.getAttribute("lang") === "en" ? "en" : "de";
     }
 
-    function setState(key) {
-      var text = dict[currentLang()][key] || key;
-      listEl.innerHTML = '<li class="news-state">' + text + "</li>";
-    }
-
     function formatDate(pubDate) {
       try {
         var d = new Date(pubDate);
+        if (isNaN(d.getTime())) return "";
         return d.toLocaleDateString(currentLang() === "en" ? "en-GB" : "de-DE", { day: "2-digit", month: "short" });
       } catch (e) { return ""; }
     }
@@ -1084,24 +1084,31 @@
       return div.innerHTML;
     }
 
-    fetch(apiUrl)
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (!data || data.status !== "ok" || !data.items || !data.items.length) {
-          setState("viertel.news.empty");
-          return;
-        }
-        var html = data.items.slice(0, 5).map(function (item) {
+    fetch(proxyUrl)
+      .then(function (res) {
+        if (!res.ok) throw new Error("proxy error");
+        return res.text();
+      })
+      .then(function (xmlText) {
+        var xml = new window.DOMParser().parseFromString(xmlText, "text/xml");
+        var items = Array.prototype.slice.call(xml.querySelectorAll("item")).slice(0, 5);
+        if (!items.length) return; // keep static fallback list untouched
+
+        var html = items.map(function (item) {
+          var title = (item.querySelector("title") || {}).textContent || "";
+          var link = (item.querySelector("link") || {}).textContent || "#";
+          var pubDate = (item.querySelector("pubDate") || {}).textContent || "";
           return (
-            '<li><a href="' + item.link + '" target="_blank" rel="noopener">' +
-            escapeHtml(item.title) +
-            '<span class="news-date">' + formatDate(item.pubDate) + "</span></a></li>"
+            '<li><a href="' + link + '" target="_blank" rel="noopener">' +
+            escapeHtml(title) +
+            '<span class="news-date">' + formatDate(pubDate) + "</span></a></li>"
           );
         }).join("");
         listEl.innerHTML = html;
       })
       .catch(function () {
-        setState("viertel.news.error");
+        // Live fetch unavailable — the static curated links already shown
+        // in the HTML remain visible, so there is nothing more to do here.
       });
   })();
 })();
