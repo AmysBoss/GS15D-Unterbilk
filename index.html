@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF6EF">
 <title>Gladbacher Straße 15 — WEG-Beirat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +22,7 @@
     --white: #FFFFFF;
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
 
   body {
@@ -32,6 +33,7 @@
     font-size: 16px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   h1, h2, h3 {
@@ -41,6 +43,7 @@
   }
 
   a { color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
 
   .mono {
     font-family: 'IBM Plex Mono', monospace;
@@ -58,7 +61,7 @@
     position: sticky;
     top: 0;
     z-index: 20;
-    background: rgba(250, 246, 239, 0.92);
+    background: rgba(250, 246, 239, 0.94);
     backdrop-filter: blur(6px);
     border-bottom: 1px solid var(--line);
   }
@@ -66,7 +69,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 24px;
     max-width: 920px;
     margin: 0 auto;
   }
@@ -85,10 +90,19 @@
     color: var(--ink-soft);
     font-family: 'IBM Plex Mono', monospace;
     letter-spacing: 0.04em;
+    white-space: nowrap;
   }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
   nav {
     display: flex;
-    gap: 22px;
+    gap: 18px;
     font-size: 14px;
     font-weight: 500;
   }
@@ -96,19 +110,52 @@
     text-decoration: none;
     color: var(--ink-soft);
     border-bottom: 1px solid transparent;
-    padding-bottom: 2px;
+    padding: 6px 0;
     transition: border-color .15s ease, color .15s ease;
   }
   nav a:hover, nav a:focus-visible { color: var(--brass-deep); border-color: var(--brass-deep); }
 
-  @media (max-width: 560px) {
+  /* language switcher */
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px;
+    background: var(--white);
+    flex: none;
+  }
+  .lang-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    padding: 7px 12px;
+    border-radius: 999px;
+    line-height: 1;
+    transition: background .15s ease, color .15s ease;
+  }
+  .lang-btn[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .lang-btn:not([aria-pressed="true"]):hover { color: var(--brass-deep); }
+  .lang-btn:focus-visible { outline: 2px solid var(--brass-deep); outline-offset: 2px; }
+
+  @media (max-width: 640px) {
+    .header-inner { padding: 12px 16px; justify-content: center; }
+    .brand-sub { display: none; }
+    .header-right { width: 100%; justify-content: space-between; order: 3; }
     nav { gap: 14px; }
     nav a { font-size: 13px; }
   }
 
   /* ---------- hero: engraved plate ---------- */
   .hero {
-    padding: 64px 24px 48px;
+    padding: 48px 16px 36px;
   }
   .plate {
     max-width: 872px;
@@ -116,7 +163,7 @@
     background: linear-gradient(155deg, #EFE6D2 0%, #E4D8BE 55%, #D9CBA8 100%);
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 56px 40px;
+    padding: 40px 24px;
     position: relative;
     box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 18px 40px -24px rgba(33,40,31,0.35);
   }
@@ -124,52 +171,60 @@
   .plate .screw-tr, .plate .screw-bl {
     content: "";
     position: absolute;
-    width: 10px; height: 10px;
+    width: 9px; height: 9px;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, #FFF6E2, #B8925A 55%, #7A5A32 100%);
     box-shadow: 0 1px 2px rgba(0,0,0,0.35);
   }
-  .plate::before { top: 16px; left: 16px; }
-  .plate::after { bottom: 16px; right: 16px; }
-  .plate .screw-tr { top: 16px; right: 16px; }
-  .plate .screw-bl { bottom: 16px; left: 16px; }
+  .plate::before { top: 14px; left: 14px; }
+  .plate::after { bottom: 14px; right: 14px; }
+  .plate .screw-tr { top: 14px; right: 14px; }
+  .plate .screw-bl { bottom: 14px; left: 14px; }
 
   .eyebrow {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.12em;
+    font-size: 11px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--brass-deep);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   .plate h1 {
-    font-size: clamp(34px, 6vw, 54px);
+    font-size: clamp(28px, 8vw, 54px);
     font-weight: 700;
     letter-spacing: -0.01em;
-    line-height: 1.05;
+    line-height: 1.08;
   }
   .plate .place {
-    font-size: 17px;
+    font-size: 16px;
     color: var(--ink-soft);
-    margin-top: 10px;
+    margin-top: 8px;
   }
   .plate .tagline {
-    margin-top: 26px;
+    margin-top: 22px;
     font-family: 'Fraunces', serif;
     font-style: italic;
-    font-size: 19px;
+    font-size: 17px;
     color: var(--ink);
     border-top: 1px solid rgba(33,40,31,0.18);
-    padding-top: 20px;
+    padding-top: 18px;
+  }
+
+  @media (min-width: 641px) {
+    .hero { padding: 64px 24px 48px; }
+    .plate { padding: 56px 40px; }
+    .eyebrow { font-size: 12px; margin-bottom: 14px; }
+    .plate .place { font-size: 17px; }
+    .plate .tagline { font-size: 19px; margin-top: 26px; padding-top: 20px; }
   }
 
   /* ---------- sections ---------- */
-  section { padding: 56px 24px; }
+  section { padding: 40px 16px; }
   .section-head {
     display: flex;
     align-items: baseline;
-    gap: 14px;
-    margin-bottom: 28px;
+    gap: 12px;
+    margin-bottom: 22px;
   }
   .section-head .tag {
     font-family: 'IBM Plex Mono', monospace;
@@ -178,29 +233,36 @@
     letter-spacing: 0.08em;
   }
   .section-head h2 {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 600;
   }
   .section-intro {
     color: var(--ink-soft);
     max-width: 60ch;
-    margin: -14px 0 28px;
-    font-size: 15px;
+    margin: -8px 0 22px;
+    font-size: 14.5px;
+  }
+
+  @media (min-width: 641px) {
+    section { padding: 56px 24px; }
+    .section-head { margin-bottom: 28px; }
+    .section-head h2 { font-size: 26px; }
+    .section-intro { margin: -14px 0 28px; font-size: 15px; }
   }
 
   /* ---------- Ansprechpartner: nameplate grid ---------- */
   .plate-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 14px;
   }
-  @media (max-width: 620px) { .plate-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 620px) { .plate-grid { grid-template-columns: 1fr; gap: 12px; } }
 
   .nameplate {
     background: var(--white);
     border: 1px solid var(--line);
     border-radius: 4px;
-    padding: 20px 22px;
+    padding: 18px 18px;
     position: relative;
     box-shadow: 0 10px 22px -18px rgba(33,40,31,0.5);
   }
@@ -223,7 +285,7 @@
   }
   .nameplate .name {
     font-family: 'Fraunces', serif;
-    font-size: 19px;
+    font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
   }
@@ -233,15 +295,18 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 4px;
+    margin-top: 6px;
+    word-break: break-word;
   }
+  .nameplate .detail a { text-decoration: none; }
+  .nameplate .detail a:hover, .nameplate .detail a:focus-visible { color: var(--brass-deep); }
   .nameplate .detail .dot {
     width: 4px; height: 4px; border-radius: 50%;
     background: var(--brass); flex: none;
   }
 
   .placeholder-note {
-    margin-top: 18px;
+    margin-top: 16px;
     font-size: 13px;
     color: var(--ink-soft);
     font-style: italic;
@@ -264,23 +329,33 @@
   .call-row {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
-    padding: 16px 20px;
+    padding: 14px 16px;
     border-bottom: 1px solid #EFE1DC;
   }
   .call-row:last-child { border-bottom: none; }
-  .call-row .what { font-weight: 500; }
-  .call-row .who { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+  .call-row .what { font-weight: 500; font-size: 14.5px; }
+  .call-row .who { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
   .call-row .num {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--brick);
     white-space: nowrap;
+    text-decoration: none;
+    padding: 6px 4px;
   }
   .call-row.sos { background: #F7ECE9; }
-  .call-row.sos .num { font-size: 20px; }
+  .call-row.sos .num { font-size: 19px; }
+
+  @media (min-width: 641px) {
+    .call-row { padding: 16px 20px; gap: 12px; }
+    .call-row .what { font-size: 16px; }
+    .call-row .who { font-size: 13px; }
+    .call-row .num { font-size: 16px; }
+    .call-row.sos .num { font-size: 20px; }
+  }
 
   /* ---------- Hausordnung ---------- */
   .rules {
@@ -290,34 +365,40 @@
   }
   .rule {
     display: grid;
-    grid-template-columns: 44px 1fr;
-    gap: 18px;
-    padding: 18px 0;
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+    padding: 16px 0;
     border-bottom: 1px solid var(--line);
   }
   .rule:last-child { border-bottom: none; }
   .rule .no {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--brass-deep);
     padding-top: 3px;
   }
   .rule h3 {
-    font-size: 16px;
+    font-size: 15.5px;
     font-weight: 600;
     margin-bottom: 4px;
   }
   .rule p {
     margin: 0;
-    font-size: 14.5px;
+    font-size: 14px;
     color: var(--ink-soft);
+  }
+
+  @media (min-width: 641px) {
+    .rule { grid-template-columns: 44px 1fr; gap: 18px; padding: 18px 0; }
+    .rule h3 { font-size: 16px; }
+    .rule p { font-size: 14.5px; }
   }
 
   /* ---------- footer ---------- */
   footer {
     border-top: 1px solid var(--line);
-    padding: 32px 24px 48px;
-    margin-top: 24px;
+    padding: 28px 16px 40px;
+    margin-top: 20px;
   }
   .footer-inner {
     max-width: 920px;
@@ -325,8 +406,8 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 10px;
-    font-size: 13px;
+    gap: 8px;
+    font-size: 12.5px;
     color: var(--ink-soft);
   }
 
@@ -334,10 +415,10 @@
     background: var(--ink);
     color: var(--paper);
     text-align: center;
-    font-size: 13px;
-    padding: 8px 16px;
+    font-size: 12px;
+    padding: 8px 12px;
     font-family: 'IBM Plex Mono', monospace;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -347,7 +428,7 @@
 </head>
 <body>
 
-  <div class="demo-banner">Beispielseite mit Platzhalterdaten — vor Veröffentlichung Namen, Nummern &amp; Hausordnung durch echte Angaben ersetzen</div>
+  <div class="demo-banner" data-i18n="demo">Beispielseite mit Platzhalterdaten — vor Veröffentlichung Namen, Nummern &amp; Hausordnung durch echte Angaben ersetzen</div>
 
   <header>
     <div class="header-inner">
@@ -355,21 +436,28 @@
         <span class="brand-mark">Gladbacher 15</span>
         <span class="brand-sub">WEG&nbsp;·&nbsp;Beirat</span>
       </div>
-      <nav>
-        <a href="#kontakt">Kontakt</a>
-        <a href="#notfall">Notfall</a>
-        <a href="#hausordnung">Hausordnung</a>
-      </nav>
+      <div class="header-right">
+        <nav>
+          <a href="#kontakt" data-i18n="nav.kontakt">Kontakt</a>
+          <a href="#notfall" data-i18n="nav.notfall">Notfall</a>
+          <a href="#hausordnung" data-i18n="nav.hausordnung">Hausordnung</a>
+        </nav>
+        <div class="lang-switch" role="group" aria-label="Sprache / Language / Dil">
+          <button class="lang-btn" data-lang="de" aria-pressed="true">DE</button>
+          <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          <button class="lang-btn" data-lang="tr" aria-pressed="false">TR</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <div class="hero">
     <div class="plate">
       <span class="screw-tr"></span><span class="screw-bl"></span>
-      <div class="eyebrow">Wohnungseigentümergemeinschaft</div>
+      <div class="eyebrow" data-i18n="hero.eyebrow">Wohnungseigentümergemeinschaft</div>
       <h1>Gladbacher Straße 15</h1>
       <div class="place">40219 Düsseldorf</div>
-      <div class="tagline">Ihr Zuhause. Unsere Gemeinschaft.</div>
+      <div class="tagline" data-i18n="hero.tagline">Ihr Zuhause. Unsere Gemeinschaft.</div>
     </div>
   </div>
 
@@ -377,37 +465,37 @@
     <div class="wrap">
       <div class="section-head">
         <span class="tag">01</span>
-        <h2>Ansprechpartner im Beirat</h2>
+        <h2 data-i18n="kontakt.title">Ansprechpartner im Beirat</h2>
       </div>
-      <p class="section-intro">Bei Fragen rund um die Hausverwaltung, laufende Themen oder Anliegen der Eigentümergemeinschaft erreichen Sie den Beirat unter der gemeinsamen Adresse oder direkt bei einem der Mitglieder.</p>
+      <p class="section-intro" data-i18n="kontakt.intro">Bei Fragen rund um die Hausverwaltung, laufende Themen oder Anliegen der Eigentümergemeinschaft erreichen Sie den Beirat unter der gemeinsamen Adresse oder direkt bei einem der Mitglieder.</p>
 
       <div class="plate-grid">
         <div class="nameplate">
-          <div class="role">Vorsitz</div>
+          <div class="role" data-i18n="role.vorsitz">Vorsitz</div>
           <div class="name">Max Beispiel</div>
-          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
-          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0000</span></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="mailto:beirat@weg-gladbacher15.de">beirat@weg-gladbacher15.de</a></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="tel:+492110000000">0211 000 0000</a></div>
         </div>
         <div class="nameplate">
-          <div class="role">Stellvertretung</div>
+          <div class="role" data-i18n="role.stellvertretung">Stellvertretung</div>
           <div class="name">Anna Muster</div>
-          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
-          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0001</span></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="mailto:beirat@weg-gladbacher15.de">beirat@weg-gladbacher15.de</a></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="tel:+492110000001">0211 000 0001</a></div>
         </div>
         <div class="nameplate">
-          <div class="role">Kasse &amp; Finanzen</div>
+          <div class="role" data-i18n="role.kasse">Kasse &amp; Finanzen</div>
           <div class="name">Jonas Platzhalter</div>
-          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
-          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0002</span></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="mailto:beirat@weg-gladbacher15.de">beirat@weg-gladbacher15.de</a></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="tel:+492110000002">0211 000 0002</a></div>
         </div>
         <div class="nameplate">
-          <div class="role">Bauliche Anliegen</div>
+          <div class="role" data-i18n="role.bau">Bauliche Anliegen</div>
           <div class="name">Lea Beispielhaft</div>
-          <div class="detail"><span class="dot"></span><span class="mono">beirat@weg-gladbacher15.de</span></div>
-          <div class="detail"><span class="dot"></span><span class="mono">0211 000 0003</span></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="mailto:beirat@weg-gladbacher15.de">beirat@weg-gladbacher15.de</a></div>
+          <div class="detail"><span class="dot"></span><a class="mono" href="tel:+492110000003">0211 000 0003</a></div>
         </div>
       </div>
-      <p class="placeholder-note">Hausverwaltung: Musterverwaltung GmbH · Ansprechpartner: Frau Beispiel · verwaltung@musterverwaltung.de · 0211 000 9999</p>
+      <p class="placeholder-note" data-i18n="kontakt.note">Hausverwaltung: Musterverwaltung GmbH · Ansprechpartner: Frau Beispiel · verwaltung@musterverwaltung.de · 0211 000 9999</p>
     </div>
   </section>
 
@@ -415,52 +503,52 @@
     <div class="wrap">
       <div class="section-head">
         <span class="tag">02</span>
-        <h2>Im Notfall</h2>
+        <h2 data-i18n="notfall.title">Im Notfall</h2>
       </div>
-      <p class="section-intro">Diese Nummern gelten rund um die Uhr. Bei Gefahr für Leib und Leben immer zuerst 112 oder 110 wählen.</p>
+      <p class="section-intro" data-i18n="notfall.intro">Diese Nummern gelten rund um die Uhr. Bei Gefahr für Leib und Leben immer zuerst 112 oder 110 wählen.</p>
 
       <div class="call-list">
         <div class="call-row sos">
           <div>
-            <div class="what">Feuer, Unfall, Lebensgefahr</div>
-            <div class="who">Feuerwehr &amp; Rettungsdienst</div>
+            <div class="what" data-i18n="notfall.feuer.what">Feuer, Unfall, Lebensgefahr</div>
+            <div class="who" data-i18n="notfall.feuer.who">Feuerwehr &amp; Rettungsdienst</div>
           </div>
-          <div class="num">112</div>
+          <a class="num" href="tel:112">112</a>
         </div>
         <div class="call-row sos">
           <div>
-            <div class="what">Einbruch, Gewalt, Gefahr</div>
-            <div class="who">Polizei</div>
+            <div class="what" data-i18n="notfall.polizei.what">Einbruch, Gewalt, Gefahr</div>
+            <div class="who" data-i18n="notfall.polizei.who">Polizei</div>
           </div>
-          <div class="num">110</div>
+          <a class="num" href="tel:110">110</a>
         </div>
         <div class="call-row">
           <div>
-            <div class="what">Wasserrohrbruch, Rohrverstopfung</div>
-            <div class="who">Notdienst Sanitär — Muster Haustechnik</div>
+            <div class="what" data-i18n="notfall.wasser.what">Wasserrohrbruch, Rohrverstopfung</div>
+            <div class="who" data-i18n="notfall.wasser.who">Notdienst Sanitär — Muster Haustechnik</div>
           </div>
-          <div class="num mono">0211 000 1111</div>
+          <a class="num mono" href="tel:+492110001111">0211 000 1111</a>
         </div>
         <div class="call-row">
           <div>
-            <div class="what">Stromausfall im Gebäude</div>
-            <div class="who">Elektro-Notdienst Beispiel</div>
+            <div class="what" data-i18n="notfall.strom.what">Stromausfall im Gebäude</div>
+            <div class="who" data-i18n="notfall.strom.who">Elektro-Notdienst Beispiel</div>
           </div>
-          <div class="num mono">0211 000 2222</div>
+          <a class="num mono" href="tel:+492110002222">0211 000 2222</a>
         </div>
         <div class="call-row">
           <div>
-            <div class="what">Aufzug bleibt stehen</div>
-            <div class="who">Aufzugsnotruf (siehe Kabine)</div>
+            <div class="what" data-i18n="notfall.aufzug.what">Aufzug bleibt stehen</div>
+            <div class="who" data-i18n="notfall.aufzug.who">Aufzugsnotruf (siehe Kabine)</div>
           </div>
-          <div class="num mono">0800 000 3333</div>
+          <a class="num mono" href="tel:+498000003333">0800 000 3333</a>
         </div>
         <div class="call-row">
           <div>
-            <div class="what">Hausmeisterliche Anliegen</div>
-            <div class="who">Herr Platzhalter</div>
+            <div class="what" data-i18n="notfall.hausmeister.what">Hausmeisterliche Anliegen</div>
+            <div class="who" data-i18n="notfall.hausmeister.who">Herr Platzhalter</div>
           </div>
-          <div class="num mono">0211 000 4444</div>
+          <a class="num mono" href="tel:+492110004444">0211 000 4444</a>
         </div>
       </div>
     </div>
@@ -470,44 +558,44 @@
     <div class="wrap">
       <div class="section-head">
         <span class="tag">03</span>
-        <h2>Hausordnung — Kurzfassung</h2>
+        <h2 data-i18n="hausordnung.title">Hausordnung — Kurzfassung</h2>
       </div>
-      <p class="section-intro">Die vollständige Hausordnung liegt im Anhang zur Teilungserklärung bei der Verwaltung. Hier die wichtigsten Punkte für den Alltag.</p>
+      <p class="section-intro" data-i18n="hausordnung.intro">Die vollständige Hausordnung liegt im Anhang zur Teilungserklärung bei der Verwaltung. Hier die wichtigsten Punkte für den Alltag.</p>
 
       <div class="rules">
         <div class="rule">
           <div class="no">01</div>
           <div>
-            <h3>Ruhezeiten</h3>
-            <p>Werktags 13:00–15:00 Uhr und täglich 22:00–7:00 Uhr. Bitte auf Trittschall in den Abendstunden achten.</p>
+            <h3 data-i18n="rule1.title">Ruhezeiten</h3>
+            <p data-i18n="rule1.text">Werktags 13:00–15:00 Uhr und täglich 22:00–7:00 Uhr. Bitte auf Trittschall in den Abendstunden achten.</p>
           </div>
         </div>
         <div class="rule">
           <div class="no">02</div>
           <div>
-            <h3>Mülltrennung</h3>
-            <p>Tonnen im Hof, Standort siehe Beschriftung. Sperrmüll bitte nicht neben den Tonnen abstellen, sondern beim Ordnungsamt anmelden.</p>
+            <h3 data-i18n="rule2.title">Mülltrennung</h3>
+            <p data-i18n="rule2.text">Tonnen im Hof, Standort siehe Beschriftung. Sperrmüll bitte nicht neben den Tonnen abstellen, sondern beim Ordnungsamt anmelden.</p>
           </div>
         </div>
         <div class="rule">
           <div class="no">03</div>
           <div>
-            <h3>Gemeinschaftsflächen</h3>
-            <p>Treppenhaus, Flure und Fahrradkeller bitte freihalten — sie dienen auch als Fluchtweg.</p>
+            <h3 data-i18n="rule3.title">Gemeinschaftsflächen</h3>
+            <p data-i18n="rule3.text">Treppenhaus, Flure und Fahrradkeller bitte freihalten — sie dienen auch als Fluchtweg.</p>
           </div>
         </div>
         <div class="rule">
           <div class="no">04</div>
           <div>
-            <h3>Haustiere</h3>
-            <p>Grundsätzlich erlaubt, sofern andere Bewohner nicht dauerhaft gestört werden. Hunde im Treppenhaus bitte an der Leine führen.</p>
+            <h3 data-i18n="rule4.title">Haustiere</h3>
+            <p data-i18n="rule4.text">Grundsätzlich erlaubt, sofern andere Bewohner nicht dauerhaft gestört werden. Hunde im Treppenhaus bitte an der Leine führen.</p>
           </div>
         </div>
         <div class="rule">
           <div class="no">05</div>
           <div>
-            <h3>Handwerker &amp; Umbauten</h3>
-            <p>Bauliche Veränderungen an Gemeinschaftseigentum bitte vorab beim Beirat oder der Verwaltung anmelden.</p>
+            <h3 data-i18n="rule5.title">Handwerker &amp; Umbauten</h3>
+            <p data-i18n="rule5.text">Bauliche Veränderungen an Gemeinschaftseigentum bitte vorab beim Beirat oder der Verwaltung anmelden.</p>
           </div>
         </div>
       </div>
@@ -517,9 +605,175 @@
   <footer>
     <div class="footer-inner">
       <span>WEG Gladbacher Straße 15 · Düsseldorf</span>
-      <span>Beispielseite — Stand Juli 2026</span>
+      <span data-i18n="footer.stand">Beispielseite — Stand Juli 2026</span>
     </div>
   </footer>
+
+<script>
+(function () {
+  var dict = {
+    de: {
+      "demo": "Beispielseite mit Platzhalterdaten — vor Veröffentlichung Namen, Nummern & Hausordnung durch echte Angaben ersetzen",
+      "nav.kontakt": "Kontakt",
+      "nav.notfall": "Notfall",
+      "nav.hausordnung": "Hausordnung",
+      "hero.eyebrow": "Wohnungseigentümergemeinschaft",
+      "hero.tagline": "Ihr Zuhause. Unsere Gemeinschaft.",
+      "kontakt.title": "Ansprechpartner im Beirat",
+      "kontakt.intro": "Bei Fragen rund um die Hausverwaltung, laufende Themen oder Anliegen der Eigentümergemeinschaft erreichen Sie den Beirat unter der gemeinsamen Adresse oder direkt bei einem der Mitglieder.",
+      "role.vorsitz": "Vorsitz",
+      "role.stellvertretung": "Stellvertretung",
+      "role.kasse": "Kasse & Finanzen",
+      "role.bau": "Bauliche Anliegen",
+      "kontakt.note": "Hausverwaltung: Musterverwaltung GmbH · Ansprechpartner: Frau Beispiel · verwaltung@musterverwaltung.de · 0211 000 9999",
+      "notfall.title": "Im Notfall",
+      "notfall.intro": "Diese Nummern gelten rund um die Uhr. Bei Gefahr für Leib und Leben immer zuerst 112 oder 110 wählen.",
+      "notfall.feuer.what": "Feuer, Unfall, Lebensgefahr",
+      "notfall.feuer.who": "Feuerwehr & Rettungsdienst",
+      "notfall.polizei.what": "Einbruch, Gewalt, Gefahr",
+      "notfall.polizei.who": "Polizei",
+      "notfall.wasser.what": "Wasserrohrbruch, Rohrverstopfung",
+      "notfall.wasser.who": "Notdienst Sanitär — Muster Haustechnik",
+      "notfall.strom.what": "Stromausfall im Gebäude",
+      "notfall.strom.who": "Elektro-Notdienst Beispiel",
+      "notfall.aufzug.what": "Aufzug bleibt stehen",
+      "notfall.aufzug.who": "Aufzugsnotruf (siehe Kabine)",
+      "notfall.hausmeister.what": "Hausmeisterliche Anliegen",
+      "notfall.hausmeister.who": "Herr Platzhalter",
+      "hausordnung.title": "Hausordnung — Kurzfassung",
+      "hausordnung.intro": "Die vollständige Hausordnung liegt im Anhang zur Teilungserklärung bei der Verwaltung. Hier die wichtigsten Punkte für den Alltag.",
+      "rule1.title": "Ruhezeiten",
+      "rule1.text": "Werktags 13:00–15:00 Uhr und täglich 22:00–7:00 Uhr. Bitte auf Trittschall in den Abendstunden achten.",
+      "rule2.title": "Mülltrennung",
+      "rule2.text": "Tonnen im Hof, Standort siehe Beschriftung. Sperrmüll bitte nicht neben den Tonnen abstellen, sondern beim Ordnungsamt anmelden.",
+      "rule3.title": "Gemeinschaftsflächen",
+      "rule3.text": "Treppenhaus, Flure und Fahrradkeller bitte freihalten — sie dienen auch als Fluchtweg.",
+      "rule4.title": "Haustiere",
+      "rule4.text": "Grundsätzlich erlaubt, sofern andere Bewohner nicht dauerhaft gestört werden. Hunde im Treppenhaus bitte an der Leine führen.",
+      "rule5.title": "Handwerker & Umbauten",
+      "rule5.text": "Bauliche Veränderungen an Gemeinschaftseigentum bitte vorab beim Beirat oder der Verwaltung anmelden.",
+      "footer.stand": "Beispielseite — Stand Juli 2026"
+    },
+    en: {
+      "demo": "Example page with placeholder data — replace names, numbers & house rules with real details before publishing",
+      "nav.kontakt": "Contact",
+      "nav.notfall": "Emergency",
+      "nav.hausordnung": "House Rules",
+      "hero.eyebrow": "Homeowners' Association",
+      "hero.tagline": "Your home. Our community.",
+      "kontakt.title": "Board Contacts",
+      "kontakt.intro": "For questions about property management, ongoing matters, or concerns of the owners' association, reach the board at the shared address or contact a member directly.",
+      "role.vorsitz": "Chair",
+      "role.stellvertretung": "Deputy Chair",
+      "role.kasse": "Treasury & Finance",
+      "role.bau": "Building Matters",
+      "kontakt.note": "Property management: Musterverwaltung GmbH · Contact: Ms. Example · verwaltung@musterverwaltung.de · 0211 000 9999",
+      "notfall.title": "In an Emergency",
+      "notfall.intro": "These numbers are available around the clock. In case of danger to life, always call 112 or 110 first.",
+      "notfall.feuer.what": "Fire, accident, life-threatening emergency",
+      "notfall.feuer.who": "Fire brigade & ambulance",
+      "notfall.polizei.what": "Break-in, violence, danger",
+      "notfall.polizei.who": "Police",
+      "notfall.wasser.what": "Burst pipe, blocked drain",
+      "notfall.wasser.who": "Plumbing emergency service — Muster Haustechnik",
+      "notfall.strom.what": "Power outage in the building",
+      "notfall.strom.who": "Electrical emergency service (example)",
+      "notfall.aufzug.what": "Elevator stuck",
+      "notfall.aufzug.who": "Elevator emergency line (see cabin)",
+      "notfall.hausmeister.what": "Caretaker matters",
+      "notfall.hausmeister.who": "Mr. Placeholder",
+      "hausordnung.title": "House Rules — Summary",
+      "hausordnung.intro": "The complete house rules are attached to the declaration of division, held by the property management. Here are the key points for everyday life.",
+      "rule1.title": "Quiet hours",
+      "rule1.text": "Weekdays 1–3 pm and daily 10 pm–7 am. Please be mindful of footstep noise in the evening.",
+      "rule2.title": "Waste separation",
+      "rule2.text": "Bins are in the courtyard, see labelling for location. Please don't leave bulky waste next to the bins — register it with the city instead.",
+      "rule3.title": "Shared areas",
+      "rule3.text": "Please keep the stairwell, hallways and bike storage clear — they also serve as escape routes.",
+      "rule4.title": "Pets",
+      "rule4.text": "Generally allowed, as long as other residents aren't permanently disturbed. Please keep dogs on a leash in the stairwell.",
+      "rule5.title": "Contractors & renovations",
+      "rule5.text": "Structural changes to common property must be registered with the board or management beforehand.",
+      "footer.stand": "Example page — as of July 2026"
+    },
+    tr: {
+      "demo": "Yer tutucu verilerle örnek sayfa — yayınlamadan önce isimleri, numaraları ve ev kurallarını gerçek bilgilerle değiştirin",
+      "nav.kontakt": "İletişim",
+      "nav.notfall": "Acil Durum",
+      "nav.hausordnung": "Ev Kuralları",
+      "hero.eyebrow": "Kat Mülkiyeti Yönetimi",
+      "hero.tagline": "Sizin eviniz. Bizim topluluğumuz.",
+      "kontakt.title": "Yönetim Kurulu İletişim",
+      "kontakt.intro": "Bina yönetimi, güncel konular veya kat maliklerine dair sorularınız için yönetim kuruluna ortak adresten veya doğrudan üyelerden ulaşabilirsiniz.",
+      "role.vorsitz": "Başkan",
+      "role.stellvertretung": "Başkan Yardımcısı",
+      "role.kasse": "Kasa ve Mali İşler",
+      "role.bau": "Yapısal Konular",
+      "kontakt.note": "Bina yönetimi: Musterverwaltung GmbH · İletişim: Bayan Örnek · verwaltung@musterverwaltung.de · 0211 000 9999",
+      "notfall.title": "Acil Durumda",
+      "notfall.intro": "Bu numaralar günün her saati geçerlidir. Hayati tehlike durumunda önce her zaman 112 veya 110'u arayın.",
+      "notfall.feuer.what": "Yangın, kaza, hayati tehlike",
+      "notfall.feuer.who": "İtfaiye ve Ambulans",
+      "notfall.polizei.what": "Hırsızlık, şiddet, tehlike",
+      "notfall.polizei.who": "Polis",
+      "notfall.wasser.what": "Su borusu patlaması, tıkanıklık",
+      "notfall.wasser.who": "Tesisat acil servisi — Muster Haustechnik",
+      "notfall.strom.what": "Binada elektrik kesintisi",
+      "notfall.strom.who": "Elektrik acil servisi (örnek)",
+      "notfall.aufzug.what": "Asansör arızası",
+      "notfall.aufzug.who": "Asansör acil hattı (kabine bakın)",
+      "notfall.hausmeister.what": "Kapıcı ile ilgili konular",
+      "notfall.hausmeister.who": "Bay Örnek",
+      "hausordnung.title": "Ev Kuralları — Özet",
+      "hausordnung.intro": "Ev kurallarının tam metni, yönetimde bulunan taksim planına ek olarak mevcuttur. Burada günlük hayat için en önemli noktalar yer almaktadır.",
+      "rule1.title": "Sessizlik saatleri",
+      "rule1.text": "Hafta içi 13:00–15:00 ve her gün 22:00–7:00 arası. Akşam saatlerinde ayak sesine lütfen dikkat edin.",
+      "rule2.title": "Çöp ayrıştırma",
+      "rule2.text": "Konteynerler avluda, yer için etiketlere bakın. Lütfen büyük atıkları konteynerlerin yanına bırakmayın, belediyeye bildirin.",
+      "rule3.title": "Ortak alanlar",
+      "rule3.text": "Merdiven boşluğu, koridorlar ve bisiklet deposu lütfen boş tutulsun — bunlar aynı zamanda kaçış yolu olarak kullanılır.",
+      "rule4.title": "Evcil hayvanlar",
+      "rule4.text": "Diğer sakinleri sürekli rahatsız etmediği sürece genel olarak izin verilir. Merdivenlerde köpekleri lütfen tasmalı gezdirin.",
+      "rule5.title": "Zanaatkarlar ve tadilatlar",
+      "rule5.text": "Ortak mülkiyette yapısal değişiklikler önceden yönetim kuruluna veya yönetime bildirilmelidir.",
+      "footer.stand": "Örnek sayfa — Temmuz 2026 itibarıyla"
+    }
+  };
+
+  var htmlLangMap = { de: "de", en: "en", tr: "tr" };
+  var STORAGE_KEY = "weg-gladbacher15-lang";
+
+  function applyLang(code) {
+    if (!dict[code]) code = "de";
+    var nodes = document.querySelectorAll("[data-i18n]");
+    nodes.forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      if (dict[code][key] !== undefined) {
+        el.innerHTML = dict[code][key];
+      }
+    });
+    document.documentElement.setAttribute("lang", htmlLangMap[code] || "de");
+    document.querySelectorAll(".lang-btn").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === code ? "true" : "false");
+    });
+    try { localStorage.setItem(STORAGE_KEY, code); } catch (e) { /* ignore */ }
+  }
+
+  document.querySelectorAll(".lang-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      applyLang(btn.getAttribute("data-lang"));
+    });
+  });
+
+  var saved = "de";
+  try {
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored && dict[stored]) saved = stored;
+  } catch (e) { /* ignore */ }
+
+  applyLang(saved);
+})();
+</script>
 
 </body>
 </html>
